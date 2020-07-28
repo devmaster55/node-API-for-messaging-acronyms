@@ -15,6 +15,9 @@ router.get("/acronyms/random/:count", acronymsController.findRandom);
 // Add new acronym
 router.post("/acronyms", acronymsController.create);
 
+// Insert dummy data into db
+router.post("/acronyms/all", acronymsController.createAll);
+
 // Update an acronym
 router.put("/acronyms/:acronym", acronymsController.update);
 
