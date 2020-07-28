@@ -34,10 +34,18 @@ const create = (req, res) => {
 
 const createAll = (req, res) => {
 
-}
+};
 
 const findAll = (req, res) => {
- 
+  const {
+    offset,
+    limit,
+    search,
+  } = req.query;
+
+  res.send({
+    message: `offset : ${offset}, limit: ${limit}, search: ${search}`
+  });
 };
 
 const findOne = (req, res) => {
@@ -64,10 +72,6 @@ const deleteOne = (req, res) => {
 
 };
 
-const deleteAll = (req, res) => {
-
-};
-
 module.exports = {
   create,
   createAll,
@@ -76,5 +80,4 @@ module.exports = {
   findRandom,
   update,
   deleteOne,
-  deleteAll,
 };
