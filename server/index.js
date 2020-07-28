@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const morgan = require('morgan');
 const path = require('path');
+const colors = require('colors');
 
 // const acronyms = require("./dummyData.json");
 
@@ -24,6 +25,21 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const db = require("./models");
+db.mongoose
+  .connect(db.url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log(colors.green(`Connected to db: ${db.url}`));
+  })
+  .catch(err => {
+    console.log(colors.red(`Cannot connect to the database! ${err}`));
+    process.exit();
+  });
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '..', 'build')));
