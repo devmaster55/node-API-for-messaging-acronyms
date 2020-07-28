@@ -5,6 +5,8 @@ const cors = require("cors");
 const morgan = require('morgan');
 const path = require('path');
 
+// const acronyms = require("./dummyData.json");
+
 const app = express();
 
 // const { registerRoutes } = require('./routes');
