@@ -9,7 +9,7 @@ const path = require('path');
 
 const app = express();
 
-// const { registerRoutes } = require('./routes');
+const { registerRoutes } = require('./routes');
 
 app.use(cors());
 app.use((req, res, next) => {
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '..', 'build')));
 
-// registerRoutes(app);
+registerRoutes(app);
 
 // simple route
 app.get("/", (req, res) => {
