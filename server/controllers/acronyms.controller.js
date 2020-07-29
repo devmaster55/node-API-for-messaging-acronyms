@@ -70,11 +70,21 @@ const findAll = (req, res) => {
 };
 
 const findOne = (req, res) => {
-  const acronym = req.params.acronym;
+  const {
+    acronym,
+  } = req.query;
   
-  res.send({
-    message: `acronym : ${acronym}`
-  });
+  Acronym.findOne({ acronym })
+    .then(data => {
+      if (!data)
+        res.status(404).send({ message: "Not found object with acronym = " + acronym });
+      else res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving object with acronym = " + acronym });
+    });
 };
 
 const findRandom = (req, res) => {

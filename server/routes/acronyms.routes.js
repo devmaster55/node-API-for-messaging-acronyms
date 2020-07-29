@@ -7,7 +7,7 @@ const router = Router();
 router.get("/acronyms", acronymsController.findAll);
 
 // Get one acronym
-router.get("/acronyms/:acronym", acronymsController.findOne);
+router.get("/acronyms/one", acronymsController.findOne);
 
 // Get random acronyms
 router.get("/acronyms/random/:count", acronymsController.findRandom);
