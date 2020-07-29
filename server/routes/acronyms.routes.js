@@ -3,6 +3,8 @@ const acronymsController = require('../controllers/acronyms.controller');
 
 const router = Router();
 
+const checkAuthorization = require('../middlewares/auth');
+
 // Get all acronyms that fuzzy match against :search
 router.get("/acronyms", acronymsController.findAll);
 
@@ -19,9 +21,9 @@ router.post("/acronyms", acronymsController.create);
 router.post("/acronyms/all", acronymsController.createAll);
 
 // Update an acronym
-router.put("/acronyms/:acronym", acronymsController.update);
+router.put("/acronyms/:acronym", checkAuthorization, acronymsController.update);
 
 // Delete an acronym
-router.delete("/acronyms/:acronym", acronymsController.deleteOne);
+router.delete("/acronyms/:acronym", checkAuthorization, acronymsController.deleteOne);
 
 module.exports = router;
