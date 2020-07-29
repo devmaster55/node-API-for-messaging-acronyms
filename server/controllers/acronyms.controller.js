@@ -104,17 +104,28 @@ const findOne = (req, res) => {
       else res.send(data);
     })
     .catch(err => {
-      res
-        .status(500)
-        .send({ message: "Error retrieving object with acronym = " + acronym });
+      res.status(500).send({ 
+        message: 
+          err.message || "Error retrieving object with acronym = " + acronym 
+      });
     });
 };
 
 const findRandom = (req, res) => {
   const count = req.params.count;
-  
-  res.send({
-    message: `count : ${count}`
+  Acronym.aggregate([
+    { $sample: { size: parseInt(count) } }
+  ])
+  .then(data => {
+    if (!data)
+      res.status(404).send({ message: "Not found random objects" });
+    else res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({ 
+      message: 
+        err.message || "Error retrieving random objects" 
+    });
   });
 };
 
@@ -137,7 +148,8 @@ const update = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating the object with acronym=" + acronym
+        message: 
+          err.message || "Error updating the object with acronym=" + acronym
       });
     });
 };
@@ -159,7 +171,8 @@ const deleteOne = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete account with acronym=" + acronym
+        message: 
+          err.message || "Could not delete account with acronym=" + acronym
       });
     });
 };
