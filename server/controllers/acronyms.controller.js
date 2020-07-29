@@ -3,6 +3,13 @@ const Acronym = db.Acronym;
 
 const acronyms = require("../dummyData.json");
 
+/**
+   * @function create
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Object} response object
+   * @description save new acronym definition
+   */
 const create = (req, res) => {
   const {
     acronym,
@@ -59,14 +66,30 @@ const createAll = (req, res) => {
 
 const findAll = (req, res) => {
   const {
-    offset,
+    from,
     limit,
     search,
   } = req.query;
 
-  res.send({
-    message: `offset : ${offset}, limit: ${limit}, search: ${search}`
-  });
+  const regex = new RegExp(escapeRegex(search), 'gi');
+
+  Acronym.find({ acronym: regex })
+    .skip(parseInt(from))
+    .limit(parseInt(limit))
+    .sort({ _id: 'asc' })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving accounts."
+      });
+    });
+};
+
+const escapeRegex = (text) => {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
 const findOne = (req, res) => {
