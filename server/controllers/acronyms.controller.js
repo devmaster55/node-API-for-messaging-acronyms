@@ -1,6 +1,8 @@
 const db = require("../models");
 const Acronym = db.Acronym;
 
+const acronyms = require("../dummyData.json");
+
 const create = (req, res) => {
   const {
     acronym,
@@ -27,13 +29,32 @@ const create = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the account."
+          err.message || "Some error occurred while creating the acronym."
       });
     });
 };
 
 const createAll = (req, res) => {
+  try {
+    acronyms.forEach(element => {
+      key = Object.keys(element);
+      value = Object.values(element);
 
+      let acronym = Acronym.create({
+        acronym: key[0],
+        definition: value[0],
+      });
+    });
+    res.send({
+      message: "All acronyms were inserted successsfully."
+    });
+  } catch ({ err }) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while inserting all acronyms."
+    });
+    return;
+  }
 };
 
 const findAll = (req, res) => {
