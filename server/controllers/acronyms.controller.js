@@ -96,11 +96,49 @@ const findRandom = (req, res) => {
 };
 
 const update = (req, res) => {
-  
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Data to update can not be empty!"
+    });
+  }
+
+  const acronym = req.params.acronym;
+
+  Acronym.findOneAndUpdate({ acronym }, req.body)
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update the object with acronym=${acronym}. Maybe object was not found!`
+        });
+      } else res.send({ message: `Acronym ${acronym} was updated successfully.` });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating the object with acronym=" + acronym
+      });
+    });
 };
 
 const deleteOne = (req, res) => {
+  const acronym = req.params.acronym;
 
+  Acronym.findOneAndRemove({ acronym })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete object with acronym=${acronym}. Maybe object was not found!`
+        });
+      } else {
+        res.send({
+          message: `Acronym ${acronym} was deleted successfully!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete account with acronym=" + acronym
+      });
+    });
 };
 
 module.exports = {
